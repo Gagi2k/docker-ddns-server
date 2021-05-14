@@ -9,7 +9,7 @@ RUN cd /root/go/src/dyndns && go mod download && GOOS=linux GOARCH=amd64 go buil
 FROM debian:buster-slim
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-	apt-get install -q -y bind9 dnsutils curl && \
+	apt-get install -q -y bind9 dnsutils curl rsyslog && \
 	apt-get clean
 
 RUN chmod 770 /var/cache/bind
@@ -23,4 +23,4 @@ COPY dyndns/views /root/views
 COPY dyndns/static /root/static
 
 EXPOSE 53 8080
-CMD ["sh", "-c", "/root/setup.sh ; service bind9 start ; /root/dyndns"]
+CMD ["sh", "-c", "/root/setup.sh ; service rsyslog start; service bind9 start ; /root/dyndns"]
