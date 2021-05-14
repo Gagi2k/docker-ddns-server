@@ -22,5 +22,8 @@ COPY --from=builder /root/go/bin/dyndns /root/dyndns
 COPY dyndns/views /root/views
 COPY dyndns/static /root/static
 
+RUN mkdir -p /root/database/ 
+VOLUME /root/database/
+
 EXPOSE 53 8080
 CMD ["sh", "-c", "/root/setup.sh ; service rsyslog start; service bind9 start ; /root/dyndns"]
